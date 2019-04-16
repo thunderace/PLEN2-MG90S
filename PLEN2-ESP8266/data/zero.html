@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+  <head>
+  <title>MiniPlan Zero Check</title>
+   <style type='text/css'>
+    body {
+      color: white;
+      background-color: #000000 }
+    .pm_btn {
+    width: 160px;
+    -webkit-border-radius: 5;
+    -moz-border-radius: 5;
+    border-radius: 5px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 24px;
+    background: #3498db;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+  }
+  .pm_text {
+  width: 160px;
+  -webkit-border-radius: 5;
+  -moz-border-radius: 5;
+  border-radius: 5px;
+  font-family: Arial;
+  font-size: 24px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  }
+  .pm_btn:hover {
+    background: #3cb0fd;
+    background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+    text-decoration: none;
+  }
+  .pms_btn {
+  width: 240px;
+  -webkit-border-radius: 5;
+  -moz-border-radius: 5;
+  border-radius: 5px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 24px;
+  background: #3498db;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  }
+  .pms_btn:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+  }
+  </style>
+  </head>
+  <body>
+  <table>
+  <tr>
+  <td><button class='pm_btn' style='background: #6e6e6e;' type='button' onclick='controlGpid(16, 90)'>GPIO 16</button></td>
+  <td><button class='pm_btn' style='background: #6e6e6e;' type='button' onclick='controlGpid(14, 90)'>GPIO 14</button></td>
+  </tr>
+  <tr>
+  <td><button class='pm_btn' style='background: #6e6e6e;' type='button' onclick='controlGpid(13, 90)'>GPIO 13</button></td>
+  <td><button class='pm_btn' style='background: #6e6e6e;' type='button' onclick='controlGpid(12, 90)'>GPIO 12</button></td>
+  </tr>
+  </table>
+  <br>
+  <table>
+  <tr>
+  <td><button class='pm_btn' style='background: #f5da81;' type='button' onclick='controlServo(8,80)'>Servo 8</button></td>
+  <td><button class='pm_btn' style='background: #f5da81;' type='button' onclick='controlServo(7,80)'>Servo 7</button></td>
+  </tr>
+  <tr>
+  <td><button class='pm_btn' style='background: #bdbdbd;' type='button' onclick='controlServo(9,110)'>Servo 9</button></td>
+  <td><button class='pm_btn' style='background: #bdbdbd;' type='button' onclick='controlServo(6,50)'>Servo 6</button></td>
+  </tr>
+  <tr>
+  <td><button class='pm_btn' type='button' onclick='controlServo(10,25)'>Servo 10</button></td>
+  <td><button class='pm_btn' type='button' onclick='controlServo(5,135)'>Servo 5</button></td>
+  </tr>
+  </table>
+  <br>
+  <table>
+  <tr>
+  <td><button class='pm_btn' type='button' onclick='controlServo(11,110)'>Servo 11</button></td>
+  <td><button class='pm_btn' type='button' onclick='controlServo(4,50)'>Servo 4</button></td>
+  </tr>
+  <tr>
+  <td><button class='pm_btn' style='background: #bdbdbd;' type='button' onclick='controlServo(12,50)'>Servo 12</button></td>
+  <td><button class='pm_btn' style='background: #bdbdbd;' type='button' onclick='controlServo(3,110)'>Servo 3</button></td>
+  </tr>
+  <tr>
+  <td><button class='pm_btn' style='background: #f5da81;' type='button' onclick='controlServo(13,110)'>Servo 13</button></td>
+  <td><button class='pm_btn' style='background: #f5da81;' type='button' onclick='controlServo(2,50)'>Servo 2</button></td>
+  </tr>
+  <tr>
+  <td><button class='pm_btn' style='background: #bdbdbd;' type='button' onclick='controlServo(14,80)'>Servo 14</button></td>
+  <td><button class='pm_btn' style='background: #bdbdbd;' type='button' onclick='controlServo(1,80)'>Servo 1</button></td>
+  </tr>
+  <tr>
+  <td><button class='pm_btn' type='button' onclick='controlServo(15,100)'>Servo 15</button></td>
+  <td><button class='pm_btn' type='button' onclick='controlServo(0,60)'>Servo 0</button></td>
+  </tr>
+  </table>
+  <br>
+  <table>
+  <tr>
+  <td><button class='pm_btn' style='background: #ed3db5;' type='button' onclick='controlPm(100)'>ALL</button></td>
+  </tr>
+  <tr>
+  <td><button id='settings' class='pms_btn' style='background: #04b404;' type='button'>Settings</button></td>
+  <td><button  id='editor' class='pms_btn' style='background: #04b404;' type='button'>Editor</button></td>
+  </tr>
+  <tr>
+  <td colspan='2'><center><button  id='home' class='pms_btn' style='background: #04b404;' type='button'>Home</button></center></td>
+  </tr>
+  </table>
+  <br>
+  </body>
+  <script>
+  document.getElementById("home").onclick = function () {
+    window.location.href = '/';
+  };
+  document.getElementById("editor").onclick = function () {
+    window.location.href = '/editor';
+  };
+  document.getElementById("settings").onclick = function () {
+    window.location.href = '/settings';
+  };
+  function controlServo(id, value) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (xhttp.readyState == 4 && xhttp.status == 200) {
+       document.getElementById('demo').innerHTML = xhttp.responseText;
+      }
+    };
+    xhttp.open('GET', 'controller?servo='+id+'&value='+value, true);
+    xhttp.send();
+  }
+  function controlGpid(id, value) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (xhttp.readyState == 4 && xhttp.status == 200) {
+       document.getElementById('demo').innerHTML = xhttp.responseText;
+      }
+    };
+    xhttp.open('GET', 'controller?gpid='+id+'&value='+value, true);
+    xhttp.send();
+  }
+  function controlPm(value) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (xhttp.readyState == 4 && xhttp.status == 200) {
+       document.getElementById('demo').innerHTML = xhttp.responseText;
+      }
+    };
+    xhttp.open('GET', 'controller?pm='+value, true);
+    xhttp.send();
+  }
+  </script>
+  </html>

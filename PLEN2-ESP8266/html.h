@@ -182,7 +182,7 @@ function controlPm(value) {
 </html>
 )rawliteral";
 
-static const char PROGMEM INDEX_HTML[] = R"rawliteral(
+static const char PROGMEM ZERO_HTML[] = R"rawliteral(
 <!DOCTYPE html>
   <head>
   <title>MiniPlan Zero Check</title>
@@ -335,5 +335,138 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
   </script>
   </html>
 )rawliteral";
+
+static const char PROGMEM INDEX_HTML[] = R"rawliteral(
+<html>
+  <head>
+    <title>MiniPlan Controller</title>
+    <style type=\"text/css\">
+    body {
+      color: white;
+      background-color: #000000 
+	}
+    .pm_btn {
+	  width: 160px;
+      -webkit-border-radius: 5;
+      -moz-border-radius: 5;
+      border-radius: 5px;
+      font-family: Arial;
+      color: #ffffff;
+      font-size: 24px;
+      background: #3498db;
+      padding: 10px 20px 10px 20px;
+      text-decoration: none;
+    }
+    .pm_btn:hover {
+      background: #3cb0fd;
+      background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+      background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+      background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+      background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+      background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+      text-decoration: none;
+    }
+    .pms_btn {
+      width: 240px;
+      -webkit-border-radius: 5;
+      -moz-border-radius: 5;
+      border-radius: 5px;
+      font-family: Arial;
+      color: #ffffff;
+      font-size: 24px;
+      background: #3498db;
+      padding: 10px 20px 10px 20px;
+      text-decoration: none;
+    }
+    .pms_btn:hover {
+      background: #3cb0fd;
+      background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+      background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+      background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+      background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+      background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+      text-decoration: none;
+    }
+    </style>
+  </head>
+  <body>
+  <table>
+  <tr>
+  <td><button  class=\"pm_btn\" type=\"button\" onclick=\"controlPm(3)\">TurnLeft</button></td>
+  <td><button  class=\"pm_btn\" type=\"button\" onclick=\"controlPm(1)\">Forward</button></td>
+  <td><button  class=\"pm_btn\" type=\"button\" onclick=\"controlPm(4)\">TurnRight</button></td>
+  </tr>
+  <tr>
+  <td><button  class=\"pm_btn\" type=\"button\" onclick=\"controlPm(5)\">MoveLeft</button></td>
+  <td><button  class=\"pm_btn\" style=\"background: #ed3db5;\" type=\"button\" onclick=\"controlPm(99)\">STANDBY</button></td>
+  <td><button  class=\"pm_btn\" type=\"button\" onclick=\"controlPm(6)\">MoveRight</button></td>
+  </tr>
+  <tr>
+  <td><button class=\"pm_btn\" type=\"button\" onclick=\"controlPm(7)\">LeftKick</button></td>
+  <td><button  class=\"pm_btn\" type=\"button\" onclick=\"controlPm(2)\">Backward</button></td>
+  <td><button class=\"pm_btn\" type=\"button\" onclick=\"controlPm(8)\">RightKick</button></td>
+  </tr>
+  </table>
+  <table>
+  <tr>
+  <td><button class=\"pms_btn\" type=\"button\" onclick=\"controlPm(9)\">SkatingForward</button></td>
+  <td><button class=\"pms_btn\" type=\"button\" onclick=\"controlPm(10)\">SkatingBackward</button></td>
+  </tr>
+  <tr>
+  <td><button class=\"pms_btn\" type=\"button\" onclick=\"controlPm(11)\">GetUp</button></td>
+  <td><button class=\"pms_btn\" type=\"button\" onclick=\"controlPm(12)\">FaceDownGetUp</button></td>
+  </tr>
+  </table>
+  <table>
+  <tr>
+  <td><button class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(1)\">Bow</button></td>
+  <td><button  class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(2)\">Waving</button></td>
+  </tr>
+  <tr>
+  <td><button class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(7)\">Clap Hands</button></td>
+  <td><button  class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(3)\">Iron Man</button></td>
+  </tr>
+  <tr>
+  <td><button class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(4)\">Apache</button></td>
+  <td><button  class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(5)\">Balance</button></td>
+  </tr>
+  <tr>
+  <td><button class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(6)\">Warm-Up</button></td>
+  <td><button  class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(8)\">Dance</button></td>
+  </tr>
+  <tr>
+  <td><button class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(9)\">Push-Up</button></td>
+  <td><button  class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(10)\">TaiChi</button></td>
+  </tr>
+  <tr>
+  <td colspan=\"2\"><center><button  class=\"pms_btn\" style=\"background: #04b404;\" type=\"button\" onclick=\"controlPms(99)\">Auto Demo</button></center></td>
+  </tr>
+  </table>
+  </body>
+  <script>
+  function controlPm(id) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (xhttp.readyState == 4 && xhttp.status == 200) {
+      }
+    };
+    xhttp.open('GET', 'controller?pm='+id, true);
+    xhttp.send();
+  }
+  function controlPms(id) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (xhttp.readyState == 4 && xhttp.status == 200) {
+      }
+    };
+    xhttp.open('GET', 'controller?pms='+id, true);
+    xhttp.send();
+  }
+  </script>
+  </html>
+)rawliteral";
+
+
+
   
 #endif
