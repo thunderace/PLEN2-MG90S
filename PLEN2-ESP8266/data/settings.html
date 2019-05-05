@@ -1,0 +1,210 @@
+<html>
+<head>
+  <title>MiniPlan Settings</title>
+  <script src="js/jquery.min.js"></script>
+  <style type='text/css'>
+  body {
+    color: white;
+    background-color: #000000 
+  } .pm_btn {
+    width: 120px;
+    -webkit-border-radius: 5;
+    -moz-border-radius: 5;
+    border-radius: 5px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 24px;
+    background: #3498db;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+  }.pm_text {
+    width: 100px;
+    -webkit-border-radius: 5;
+    -moz-border-radius: 5;
+    border-radius: 5px;
+    font-family: Arial;
+    font-size: 24px;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+  } .pm_btn:hover {
+    background: #3cb0fd;
+    background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+    text-decoration: none;
+  }.pms_btn {
+    width: 160px;
+    -webkit-border-radius: 5;
+    -moz-border-radius: 5;
+    border-radius: 5px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 24px;
+    background: #3498db;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+  }.pms_btn:hover {
+    background: #3cb0fd;
+    background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+    text-decoration: none;
+  }
+  </style>
+</head>
+<body onload='onLoad()'>
+<table>
+<tr>
+<td>GPIO 16<br/><input class='pm_text' type='text' id='servo_19' value=''><button class='pm_btn' type='button' onclick='saveServo(19,"servo_19")'>SET</button></td>
+<td>GPIO 14<br/><input class='pm_text' type='text' id='servo_18' value=''><button class='pm_btn' type='button' onclick='saveServo(18,"servo_18")'>SET</button></td>
+</tr>
+<tr>
+<td>GPIO 13<br/><input class='pm_text' type='text' id='servo_17' value=''><button class='pm_btn' type='button' onclick='saveServo(17,"servo_17")'>SET</button></td>
+<td>GPIO 12<br/><input class='pm_text' type='text' id='servo_16' value=''><button class='pm_btn' type='button' onclick='saveServo(16,"servo_16")'>SET</button></td>
+</tr>
+<tr>
+<td>Servo 8<br/><input class='pm_text' type='text' id='servo_8'  value=''><button class='pm_btn' type='button' onclick='saveServo(8,"servo_8")'>SET</button></td>
+<td>Servo 7<br/><input class='pm_text' type='text' id='servo_7'  value=''><button class='pm_btn' type='button' onclick='saveServo(7,"servo_7")'>SET</button></td>
+</tr>
+<tr>
+<td>Servo 9<br/><input class='pm_text' type='text' id='servo_9'  value=''><button class='pm_btn' type='button' onclick='saveServo(9,"servo_9")'>SET</button></td>
+<td>Servo 6<br/><input class='pm_text' type='text' id='servo_6'  value=''><button class='pm_btn' type='button' onclick='saveServo(6,"servo_6")'>SET</button></td>
+</tr>
+<tr>
+<td>Servo 10<br/><input class='pm_text' type='text' id='servo_10' value=''><button class='pm_btn' type='button' onclick='saveServo(10,"servo_10")'>SET</button></td>
+<td>Servo  5<br/><input class='pm_text' type='text' id='servo_5'  value=''><button class='pm_btn' type='button' onclick='saveServo(5,"servo_5")'>SET</button></td>
+</tr>
+<tr>
+<td>Servo 11<br/><input class='pm_text' type='text' id='servo_11' value=''><button class='pm_btn' type='button' onclick='saveServo(11,"servo_11")'>SET</button></td>
+<td>Servo  4<br/><input class='pm_text' type='text' id='servo_4'  value=''><button class='pm_btn' type='button' onclick='saveServo(4,"servo_4")'>SET</button></td>
+</tr>
+<tr>
+<td>Servo 12<br/><input class='pm_text' type='text' id='servo_12' value=''><button class='pm_btn' type='button' onclick='saveServo(12,"servo_12")'>SET</button></td>
+<td>Servo 3<br/><input class='pm_text' type='text' id='servo_3' value=''><button class='pm_btn' type='button' onclick='saveServo(3,"servo_3")'>SET</button></td>
+</tr>
+<tr>
+<td>Servo 13<br/><input class='pm_text' type='text' id='servo_13' value=''><button class='pm_btn' type='button' onclick='saveServo(13,"servo_13")'>SET</button></td>
+<td>Servo 2<br/><input class='pm_text' type='text' id='servo_2' value=''><button class='pm_btn' type='button' onclick='saveServo(2,"servo_2")'>SET</button></td>
+</tr>
+
+<tr>
+<td>Servo 14<br/><input class='pm_text' type='text' id='servo_14' value=''><button class='pm_btn' type='button' onclick='saveServo(14,"servo_14")'>SET</button></td>
+<td>Servo 1<br/><input class='pm_text' type='text' id='servo_1' value=''><button class='pm_btn' type='button' onclick='saveServo(1,"servo_1")'>SET</button></td>
+</tr>
+
+<tr>
+<td>Servo 15<br/><input class='pm_text' type='text' id='servo_15' value=''><button class='pm_btn' type='button' onclick='saveServo(15,"servo_15")'>SET</button></td>
+<td>Servo 0<br/><input class='pm_text' type='text' id='servo_0' value=''><button class='pm_btn' type='button' onclick='saveServo(0,"servo_0")'>SET</button></td>
+</tr>
+</table>
+<br>
+<table>
+<tr>
+<td>PWM Frequency Calibration<br/><input class='pm_text' type='text' id='servo_21' value=''><button class='pm_btn' type='button' onclick='saveServo(21,"servo_21")'>SET</button></td>
+</tr>
+<tr>
+<td>Delay Time<br/><input class='pm_text' type='text' id='servo_20' value=''><button class='pm_btn' type='button' onclick='saveServo(20,"servo_20")'>SET</button></td>
+</tr>
+</table>
+<br>
+<br>
+<table>
+<tr>
+<td><button class='pm_btn' style='background: #ed3db5;' type='button' onclick='saveServo(100, 0)'>RESET</button></td>
+</tr>
+<tr>
+<td><button id='home' class='pms_btn' style='background: #04b404;' type='button'>Home</button></td>
+<td><button  id='editor' class='pms_btn' style='background: #04b404;' type='button'>Editor</button></td>
+</tr>
+<tr>
+<td colspan='2'><center><button  id='zero' class='pms_btn' style='background: #04b404;' type='button'>Zero</button></center></td>
+</tr>
+</table>
+<br>
+</body>
+<script>
+  document.getElementById("home").onclick = function () {
+    window.location.href = '/';
+  };
+  document.getElementById("editor").onclick = function () {
+    window.location.href = '/editor';
+  };
+  document.getElementById("zero").onclick = function () {
+    window.location.href = '/zero';
+  };
+
+function onLoad() {
+  // TODO get data from server in json format
+  $.getJSON('/settings.json', function(data) {
+    //console.log("Mesures envoyees : " + JSON.stringify(data) + "|" + data.t + "|" + data.h + "|" + data.pa) ;
+    //document.getElementById('servo_21').value = data.s21;
+    document.getElementById('servo_20').value = data.s20;
+    document.getElementById('servo_19').value = data.s19;
+    document.getElementById('servo_18').value = data.s18;
+    document.getElementById('servo_17').value = data.s17;
+    document.getElementById('servo_16').value = data.s16;
+    document.getElementById('servo_15').value = data.s15;
+    document.getElementById('servo_14').value = data.s14;
+    document.getElementById('servo_13').value = data.s13;
+    document.getElementById('servo_12').value = data.s12;
+    document.getElementById('servo_11').value = data.s11;
+    document.getElementById('servo_10').value = data.s10;
+    document.getElementById('servo_9').value = data.s9;
+    document.getElementById('servo_8').value = data.s8;
+    document.getElementById('servo_7').value = data.s7;
+    document.getElementById('servo_6').value = data.s6;
+    document.getElementById('servo_5').value = data.s5;
+    document.getElementById('servo_4').value = data.s4;
+    document.getElementById('servo_3').value = data.s3;
+    document.getElementById('servo_2').value = data.s2;
+    document.getElementById('servo_1').value = data.s1;
+    document.getElementById('servo_0').value = data.s0;
+  }).fail(function(err){
+    console.log("err getJSON mesures.json "+JSON.stringify(err));
+  });
+}
+
+function saveServo(id, textId) {
+  var xhttp = new XMLHttpRequest();
+  var value = 0;
+  if(id==100) {
+    document.getElementById('servo_20').value = 0;
+    document.getElementById('servo_19').value = 0;
+    document.getElementById('servo_18').value = 0;
+    document.getElementById('servo_17').value = 0;
+    document.getElementById('servo_16').value = 0;
+    document.getElementById('servo_15').value = 0;
+    document.getElementById('servo_14').value = 0;
+    document.getElementById('servo_13').value = 0;
+    document.getElementById('servo_12').value = 0;
+    document.getElementById('servo_11').value = 0;
+    document.getElementById('servo_10').value = 0;
+    document.getElementById('servo_9').value = 0;
+    document.getElementById('servo_8').value = 0;
+    document.getElementById('servo_7').value = 0;
+    document.getElementById('servo_6').value = 0;
+    document.getElementById('servo_5').value = 0;
+    document.getElementById('servo_4').value = 0;
+    document.getElementById('servo_3').value = 0;
+    document.getElementById('servo_2').value = 0;
+    document.getElementById('servo_1').value = 0;
+    document.getElementById('servo_0').value = 0;
+  }else{
+    value = document.getElementById(textId).value;
+  }
+/*  
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+     document.getElementById('demo').innerHTML = xhttp.responseText;
+    }
+  };
+*/  
+  xhttp.open('GET','save?key='+id+'&value='+value, true);
+  xhttp.send();
+}
+</script>
+</html>

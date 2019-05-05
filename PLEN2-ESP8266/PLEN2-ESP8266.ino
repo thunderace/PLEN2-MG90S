@@ -5,12 +5,15 @@
 #include <ESP8266WebServer.h>
 #include <Adafruit_PWMServoDriver.h>
 #include <EEPROM.h>
+#include <FS.h>
 #include "configuration.h"
 #if SSD1306
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #endif
+#ifndef WITH_SPIFFS
 #include "html.h"
+#endif
 // Version
 String FW_Version = "PLEN2 MG90S Firmware Version 0.1";
 
@@ -43,6 +46,7 @@ const int SERVOMAX = 472;        // 472
 // Servo Delay Base Time
 const int BASEDELAYTIME = 10;    // 10ms
 
+
 // AP Password
 const char WiFiAPPSK[] = "12345678";
 
@@ -54,14 +58,14 @@ int Servo_PROGRAM;
 int Servo_PROGRAM_Stack;
 
 // Backup Servo Value
-int Running_Servo_POS [ALLSERVOS];
+int Running_Servo_POS[ALLSERVOS];
 
 // Engineering model
 int Engineering_Model;
 // Start Web Server
 ESP8266WebServer server(80);
 // Start GPIO Software Servo
-Servo servo12;
+Servo servo12;  
 Servo servo13;
 Servo servo14;
 Servo servo16;
@@ -189,14 +193,12 @@ void writeKeyValue(int8_t key, int8_t value) {
 }
 
 int8_t readKeyValue(int8_t key) {
-  Serial.println("read");
-  Serial.println(key);
-
   int8_t value = EEPROM.read(key);
-}
-
-void handleAction(WiFiClient client, String req, HTTPMethod method) {
-  server.send(200, "text/plain", "Hello");
+  Serial.print("read key (");
+  Serial.print(key);
+  Serial.print(") : ");
+  Serial.println(value);
+  return value;
 }
 
 void handleSave() {
@@ -346,15 +348,20 @@ void handleOnLine() {
   server.send(200, "text/html", "(m0, m1)=(" + m0 + "," + m1 + ")");
 }
 
+#ifndef WITH_SPIFFS
 void handleZero() {
-  server.send(200, "text/html", INDEX_HTML);
+  server.send(200, "text/html", ZERO_HTML);
 }
 
 void handleEditor() {
   server.send(200, "text/html", EDITOR_HTML);
 }
 
-void handleSetting() {
+void handleIndex() {
+  server.send(200, "text/html", INDEX_HTML);
+}
+
+void handleSettings() {
   int servo22Val = readKeyValue(22);
   String servo22ValStr = String(servo22Val);
 
@@ -427,7 +434,7 @@ void handleSetting() {
   String content = "";
   content += "<html>";
   content += "<head>";
-  content += "  <title>MiniPlan Setting</title>";
+  content += "  <title>MiniPlan Settings</title>";
   content += "  <style type=\"text/css\">";
   content += "  body {";
   content += "    color: white;";
@@ -602,11 +609,6 @@ void handleSetting() {
   content += "  }else{";
   content += "    value = document.getElementById(textId).value;";
   content += "   }";
-  content += "  xhttp.onreadystatechange = function() {";
-  content += "    if (xhttp.readyState == 4 && xhttp.status == 200) {";
-  content += "     document.getElementById(\"demo\").innerHTML = xhttp.responseText;";
-  content += "    }";
-  content += "  };";
   content += "  xhttp.open(\"GET\",\"save?key=\"+id+\"&value=\"+value, true);";
   content += "  xhttp.send();";
   content += "}";
@@ -615,164 +617,38 @@ void handleSetting() {
   content += "</html>";
   server.send(200, "text/html", content);
 }
-
-void handleIndex() {
-  String content = "";
-  content += "<html>";
-
-  content += "<head>";
-  content += "  <title>MiniPlan Controller</title>";
-  content += "  <style type=\"text/css\">";
-  content += "  body {";
-  content += "    color: white;";
-  content += "    background-color: #000000 }";
-
-  content += "  .pm_btn {";
-  content += "  width: 160px;";
-  content += "  -webkit-border-radius: 5;";
-  content += "  -moz-border-radius: 5;";
-  content += "  border-radius: 5px;";
-  content += "  font-family: Arial;";
-  content += "  color: #ffffff;";
-  content += " font-size: 24px;";
-  content += "background: #3498db;";
-  content += "  padding: 10px 20px 10px 20px;";
-  content += "  text-decoration: none;";
-  content += "}";
-
-  content += ".pm_btn:hover {";
-  content += "  background: #3cb0fd;";
-  content += "  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);";
-  content += "  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);";
-  content += "  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);";
-  content += "  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);";
-  content += "  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);";
-  content += "  text-decoration: none;";
-  content += "}";
-
-  content += ".pms_btn {";
-  content += "width: 240px;";
-  content += "-webkit-border-radius: 5;";
-  content += "-moz-border-radius: 5;";
-  content += "border-radius: 5px;";
-  content += "font-family: Arial;";
-  content += "color: #ffffff;";
-  content += "font-size: 24px;";
-  content += "background: #3498db;";
-  content += "padding: 10px 20px 10px 20px;";
-  content += "text-decoration: none;";
-  content += "}";
-
-  content += ".pms_btn:hover {";
-  content += "background: #3cb0fd;";
-  content += "background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);";
-  content += "background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);";
-  content += "background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);";
-  content += "background-image: -o-linear-gradient(top, #3cb0fd, #3498db);";
-  content += "background-image: linear-gradient(to bottom, #3cb0fd, #3498db);";
-  content += "text-decoration: none;";
-  content += "}";
-  content += " </style>";
-  content += "</head>";
-
-
-  content += "<body>";
-  content += "<table>";
-  content += "<tr>";
-  content += "<td><button  class=\"pm_btn\" type=\"button\" onclick=\"controlPm(3)\">TurnLeft</button></td>";
-  content += "<td><button  class=\"pm_btn\" type=\"button\" onclick=\"controlPm(1)\">Forward</button></td>";
-  content += "<td><button  class=\"pm_btn\" type=\"button\" onclick=\"controlPm(4)\">TurnRight</button></td>";
-  content += "</tr>";
-
-  content += "<tr>";
-  content += "<td><button  class=\"pm_btn\" type=\"button\" onclick=\"controlPm(5)\">MoveLeft</button></td>";
-  content += "<td><button  class=\"pm_btn\" style=\"background: #ed3db5;\" type=\"button\" onclick=\"controlPm(99)\">STANDBY</button></td>";
-  content += "<td><button  class=\"pm_btn\" type=\"button\" onclick=\"controlPm(6)\">MoveRight</button></td>";
-  content += "</tr>";
-
-  content += "<tr>";
-  content += "<td><button class=\"pm_btn\" type=\"button\" onclick=\"controlPm(7)\">LeftKick</button></td>";
-  content += "<td><button  class=\"pm_btn\" type=\"button\" onclick=\"controlPm(2)\">Backward</button></td>";
-  content += "<td><button class=\"pm_btn\" type=\"button\" onclick=\"controlPm(8)\">RightKick</button></td>";
-  content += "</tr>";
-  content += "</table>";
-
-  content += "<table>";
-  content += "<tr>";
-  content += "<td><button class=\"pms_btn\" type=\"button\" onclick=\"controlPm(9)\">SkatingForward</button></td>";
-  content += "<td><button class=\"pms_btn\" type=\"button\" onclick=\"controlPm(10)\">SkatingBackward</button></td>";
-  content += "</tr>";
-
-  content += "<tr>";
-  content += "<td><button class=\"pms_btn\" type=\"button\" onclick=\"controlPm(11)\">GetUp</button></td>";
-  content += "<td><button class=\"pms_btn\" type=\"button\" onclick=\"controlPm(12)\">FaceDownGetUp</button></td>";
-  content += "</tr>";
-  content += "</table>";
-
-  content += "<table>";
-  content += "<tr>";
-  content += "<td><button class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(1)\">Bow</button></td>";
-  content += "<td><button  class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(2)\">Waving</button></td>";
-  content += "</tr>";
-  content += "<tr>";
-  content += "<td><button class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(7)\">Clap Hands</button></td>";
-  content += "<td><button  class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(3)\">Iron Man</button></td>";
-  content += "</tr>";
-  content += "<tr>";
-  content += "<td><button class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(4)\">Apache</button></td>";
-  content += "<td><button  class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(5)\">Balance</button></td>";
-  content += "</tr>";
-  content += "<tr>";
-  content += "<td><button class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(6)\">Warm-Up</button></td>";
-  content += "<td><button  class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(8)\">Dance</button></td>";
-  content += "</tr>";
-  content += "<tr>";
-  content += "<td><button class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(9)\">Push-Up</button></td>";
-  content += "<td><button  class=\"pms_btn\" style=\"background: #ffbf00;\" type=\"button\" onclick=\"controlPms(10)\">TaiChi</button></td>";
-  content += "</tr>";
-
-  content += "<tr>";
-  content += "<td colspan=\"2\"><center><button  class=\"pms_btn\" style=\"background: #04b404;\" type=\"button\" onclick=\"controlPms(99)\">Auto Demo</button></center></td>";
-  content += "</tr>";
-  content += "</table>";
-
-  content += "<table>";
-  content += "<tr>";
-  content += "<td>\"" + FW_Version + "\"</td>";
-  content += "</tr>";
-  content += "</table>";
-
-  content += "</body>";
-  content += "<script>";
-  content += "function controlPm(id) {";
-  content += "var xhttp = new XMLHttpRequest();";
-  content += "xhttp.onreadystatechange = function() {";
-  content += "    if (xhttp.readyState == 4 && xhttp.status == 200) {";
-
-  content += "    }";
-  content += "  };";
-  content += "  xhttp.open(\"GET\", \"controller?pm=\"+id, true);";
-  content += "  xhttp.send();";
-  content += "}";
-  content += "function controlPms(id) {";
-  content += "  var xhttp = new XMLHttpRequest();";
-  content += "  xhttp.onreadystatechange = function() {";
-  content += "    if (xhttp.readyState == 4 && xhttp.status == 200) {";
-
-  content += " }";
-  content += "  };";
-  content += "  xhttp.open(\"GET\", \"controller?pms=\"+id, true);";
-  content += "  xhttp.send();";
-  content += "}";
-  content += "</script>";
-  content += "</html>";
-
-  server.send(200, "text/html", content);
+#else
+void sendSettings() {
+  String json = "{";
+  for (int i = 0 ; i < 21; i++) {
+    int val = readKeyValue(i);
+    Serial.println(val);
+    json +=  "\"s" + String(i) + "\":" + String(val);
+    if (i < 20) {
+      json += ",";
+    }
+  }
+  json += "}";
+  Serial.println(json);
+  server.send(200, "application/json", json);
+  Serial.println("Send measures");
 }
+#endif
+
 
 void enableWebServer() {
   HTTPMethod getMethod = HTTP_GET;
-
+#ifdef WITH_SPIFFS
+  server.serveStatic("/js", SPIFFS, "/js");
+  server.on("/controller", getMethod, handleController);
+  server.on("/save", getMethod, handleSave);
+  server.serveStatic("/", SPIFFS, "/index.html");
+  server.serveStatic("/editor", SPIFFS, "/editor.html");
+  server.serveStatic("/zero", SPIFFS, "/zero.html");
+  server.serveStatic("/settings", SPIFFS, "/settings.html");
+  server.on("/online", getMethod, handleOnLine);
+  server.on("/settings.json", sendSettings);
+#else
   server.on("/controller", getMethod, handleController);
   server.on("/save", getMethod, handleSave);
   server.on("/", getMethod, handleIndex);
@@ -780,8 +656,66 @@ void enableWebServer() {
   server.on("/zero", getMethod, handleZero);
   server.on("/setting", getMethod, handleSetting);
   server.on("/online", getMethod, handleOnLine);
-
+#endif
   server.begin();
+}
+
+const char *ssid[MAX_SSID];
+const char *password[MAX_SSID];
+
+
+boolean connectWifi() {
+  Serial.println("Connecting...");
+  int status;
+  WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+	int n = WiFi.scanNetworks();
+  int maxQualityId = -1;
+  int maxQuality = -255;
+ 	if (n != 0) {
+		for (int i = 0; i < n; ++i) {
+		  for (int t = 0; t < MAX_SSID; t++) {
+		    if (WiFi.SSID(i) == String(ssid[t])) {
+    			int quality=0;
+    			if (WiFi.RSSI(i) <= -100) {
+    				quality = 0;
+    			} else {
+    				if (WiFi.RSSI(i) >= -50) {
+    					quality = 100;
+    				} else {
+    					quality = 2 * (WiFi.RSSI(i) + 100);
+    				}
+    			}
+    			if (quality > maxQuality || maxQuality == -255) {
+    			  maxQuality = quality;
+    			  maxQualityId = t;
+    			}
+		    }
+		  }
+		}
+		// try to connect to the max quality known network
+		if (maxQualityId != -1) {
+      Serial.print("Trying ");
+      Serial.print(ssid[maxQualityId]);
+      status = WiFi.begin(ssid[maxQualityId], password[maxQualityId]);
+      int retries = 0;
+      while (((status = WiFi.status()) != WL_CONNECTED) && (retries < 20)) {
+        retries++;
+        delay(1000);
+        Serial.print(".");
+      }
+      if (status != WL_CONNECTED) {
+        Serial.println(" failed");
+        return false;
+      } else {
+        Serial.print(" connected : ");
+        Serial.println(WiFi.localIP());
+        return true;
+      }
+		}
+ 	}
+  Serial.println("Wifi connection failed");
+ 	return false;
 }
 
 void setup(void) {
@@ -814,6 +748,7 @@ void setup(void) {
   display.display();
 #endif
 
+#if 0
   // AP SSID Name
   uint8_t mac[WL_MAC_ADDR_LENGTH];
   WiFi.softAPmacAddress(mac);
@@ -832,7 +767,7 @@ void setup(void) {
 
   WiFi.softAP(AP_NameChar, WiFiAPPSK);
   IPAddress myIP = WiFi.softAPIP();
-
+#endif
   // EEPROM
   EEPROM.begin(512);
   delay(10);
@@ -853,8 +788,9 @@ void setup(void) {
   Running_Servo_POS[DURATION_INDEX] = Servo_Act_1[DURATION_INDEX] + (int8_t)EEPROM.read(DURATION_INDEX);
 
   if (Engineering_Model == 0) {
-    Serial.println("");
+#if 0    
     Serial.println("MiniPlan V6 SSID : " + AP_NameString);
+    Serial.println("MiniPlan V6 IP : " + myIP.toString());
     Serial.println("MiniPlan V6 PW : 12345678");
     Serial.println("Please, connect !");
 #if SSD1306
@@ -870,19 +806,54 @@ void setup(void) {
 
     Serial.println("");
     Serial.println("Connected !");
+#endif    
 #if SSD1306
     display.println("Connected !");
     display.display();
     OLED_Display_Index = 24;
 #endif
   }
+  if (!SPIFFS.begin()) {
+    Serial.println("SPIFFS Mount failed");        // Problème avec le stockage SPIFFS - Serious problem with SPIFFS 
+  } else { 
+    Serial.println("SPIFFS Mount succesfull");
+  }
   enableWebServer();
+
+#if MAX_SSID > 2
+  ssid[2] = _SSID3_;
+  password[2] = _WIFI_PASSWORD3_;
+#endif
+
+#if MAX_SSID > 1
+  ssid[1] = _SSID2_;
+  password[1] = _WIFI_PASSWORD2_;
+#endif
+
+#if MAX_SSID > 0
+  ssid[0] = _SSID1_;
+  password[0] = _WIFI_PASSWORD1_;
+#endif
+  
 }
-
-
 
 /*============================================================================*/
 void loop(void) {
+  if (WiFi.status() != WL_CONNECTED) {
+    delay(2000);
+    Serial.println("Not connected");
+    Serial.println(_NODENAME_);
+    Serial.println(_TAG_);
+    if (connectWifi() == false) {
+      delay(2000);
+      return;
+    }
+    Serial.println("Connected");
+  }
+/*  
+  Serial.print(F("WiFi Status: "));
+  Serial.println(WiFi.status());
+*/  
   server.handleClient();
 
   if (Servo_PROGRAM >= 1) {
@@ -1045,6 +1016,7 @@ void loop(void) {
     Servo_PROGRAM_Stack = 0;
   }
 
+#if 0
   if (WiFi.softAPgetStationNum() == 0) {
     Serial.println("Disconnect !");
 #if SSD1306
@@ -1060,9 +1032,9 @@ void loop(void) {
     while (WiFi.softAPgetStationNum() == 0) {
       delay(200);
     }
-    Serial.println("");
     Serial.println("Connected !");
   }
+#endif
 }
 
 
